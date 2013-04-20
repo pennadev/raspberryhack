@@ -1,12 +1,18 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include "Detection.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include "opencv2/objdetect/objdetect.hpp"
 
 //#include <opencv2/highgui/highgui.hpp>
 using namespace cv;
+
+int load(){
+	
+}
 
 int main(int argc, char *argv[])
 {
@@ -16,9 +22,9 @@ int main(int argc, char *argv[])
 	}
 
 	Mat a  = imread(std::string("/home/pi/testimg.jpg"), 1);
+	Detection dect;
 
-
-	imwrite(std::string("/home/pi/testimg.jpg", a);
-
+	dect.getFaces(a);
+	imwrite(std::string("/home/pi/testimgout.jpg"), a);
 	return 0;
 }

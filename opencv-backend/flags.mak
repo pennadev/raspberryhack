@@ -17,7 +17,7 @@ MCUFLAGS :=
 
 INCLUDE_DIRS :=
 LIBRARY_DIRS := /usr/lib
-LIBRARY_NAMES := opencv_core opencv_imgproc opencv_highgui
+LIBRARY_NAMES := opencv_core opencv_imgproc opencv_highgui opencv_objdetect
 
 CFLAGS := -ggdb -ffunction-sections
 DEBUG_CFLAGS := -O0

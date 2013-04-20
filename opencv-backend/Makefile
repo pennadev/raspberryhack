@@ -4,7 +4,7 @@
 #Visit http://visualgdb.com/makefiles for more details
 
 #VisualGDB: AutoSourceFiles		#<--- remove this line to disable auto-updating of SOURCEFILES and EXTERNAL_LIBS
-SOURCEFILES := hackproj.cpp
+SOURCEFILES := Detection.cpp hackproj.cpp
 
 TARGETNAME := hackproj
 #TARGETTYPE can be APP, STATIC or SHARED
