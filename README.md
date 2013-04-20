@@ -1,4 +1,4 @@
-#Procesor de imagine#
+#Web Social Graph Face Detection and Recognition#
 
 #Descriere proiect:#
 
