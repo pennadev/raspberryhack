@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		detection.getFaces(image);
 		std::stringstream a;
 		a << i;
-		imwrite("/home/pi/" + a.str() + ".jpg" , image);
+		imwrite("home/pi/hackproj/processed_images" + a.str() + ".jpg" , image);
 		std::cout << "Wrote file" << std::endl;
 	}
 
