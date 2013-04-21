@@ -17,13 +17,13 @@ MCUFLAGS :=
 
 INCLUDE_DIRS :=
 LIBRARY_DIRS := /usr/lib
-LIBRARY_NAMES := opencv_core opencv_imgproc opencv_highgui opencv_objdetect
+LIBRARY_NAMES := opencv_core opencv_imgproc opencv_highgui opencv_objdetect boost_filesystem boost_system
 
-CFLAGS := -ggdb -ffunction-sections
-DEBUG_CFLAGS := -O0
+CFLAGS := 
+DEBUG_CFLAGS := -O3
 RELEASE_CFLAGS := -O3
 
-CXXFLAGS := $(CFLAGS)  -ffunction-sections
+CXXFLAGS := $(CFLAGS)  -std=c++0x
 DEBUG_CXXFLAGS := $(DEBUG_CFLAGS)
 RELEASE_CXXFLAGS := $(RELEASE_CFLAGS)
 

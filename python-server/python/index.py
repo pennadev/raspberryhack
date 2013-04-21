@@ -42,45 +42,32 @@ def register_bl(db):
     password = request.forms.password
 
     state = {
-        'nick': nick,
-        'email': email
+            'nick': nick,
+            'email': email
     }
-    
-    
-    name, ext = os.path.splitext(upload.filename)
-    if ext in ('png','jpg','jpeg'):        
-        if is_valid_nick(nick):
-            if is_valid_email(email):
-                if is_valid_password(password):
-                    import hashlib
 
-                    password = hashlib.sha1(password).hexdigest()
-                    upload = request.files.get('file_data')
+    if is_valid_nick(nick):
+        if is_valid_email(email):
+            if is_valid_password(password):
+                import hashlib
 
-                    result = add_user(db, nick, email, password, upload.filename)
+                password = hashlib.sha1(password).hexdigest()
 
-                    if result is True:
-                        
-                        upload_status = upload_file(upload)
+                result = add_user(db, nick, email, password)
 
-                        if upload_status.error is None:                            
-                            message = const.R_SUCCESS
-                            logging.info('{0}({1}) has registered'.format(nick, email))
-                        else:
-                            message = upload_status.message
-                            error = upload_status.error
-                    elif result is False:
-                        error = err.DB
-                    else:
-                        error = result
+                if result is True:
+                    message = const.R_SUCCESS
+                    logging.info('{0}({1}) has registered'.format(nick, email))
+                elif result is False:
+                    error = err.DB
                 else:
-                    error = err.PASS
+                    error = result
             else:
-                error = err.EMAIL
+                error = err.PASS
         else:
-            error = err.NICK
+            error = err.EMAIL
     else:
-        error = err.NO_FILE
+        error = err.NICK
 
     del password
 
@@ -152,14 +139,11 @@ def upload(db):
 #TODO: test this
 @post('/upload')
 def upload_view(db):
-    file_data = request.files.file_data
-    upload_status = upload_file(file_data)
-
-    return template('upload', message=upload_status.message, error=upload_status.error)
-
-def upload_file(file_data):
     message = None
     error = None
+
+    file_data = request.files.file_data
+
     if file_data.file:
         sess = request.environ.get('beaker.session')
         sess.get_by_id(request.cookies.get('beaker.session.id'))
@@ -178,11 +162,8 @@ def upload_file(file_data):
     else:
         error = err.NO_FILE
 
-    state = {
-            'error': error,
-            'message': message
-    }
-    return state
+    return template('upload', message=message, error=error)
+
 
 #TODO: test this
 @get('/logout')
@@ -237,21 +218,19 @@ def is_valid_sqlite3(db):
     return False
 
 #TODO test this
-def add_user(db, nick, email, password, filename):
+def add_user(db, nick, email, password):
     '''Add a user to the database and log the action
     Return True is the user was added succesfully, else Fasle
     '''
 
     try:
-        db.execute('INSERT INTO user(nick, email, password, image_reference) VALUES(?,?,?,?)',
-            (nick, email, password, filename))
+        db.execute('INSERT INTO user(nick, email, password) VALUES(?,?,?)',
+            (nick, email, password))
     except sqlite3.IntegrityError as e:
         if 'email' in str(e):
             return err.UNIQUE_EMAIL
         elif 'nick' in str(e):
             return err.UNIQUE_NICK
-        elif 'image_reference' in str(e):
-            return err.NO_FILE
         else:
             logging.exception(e)
             return False
