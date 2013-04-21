@@ -14,14 +14,26 @@ def create_db(name, path):
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 nick TEXT UNIQUE,
                 email TEXT UNIQUE,
-                password TEXT
+                password TEXT,
+                image_reference TEXT
             )''')
 
     c.execute('''CREATE TABLE upload(
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 user_id INTEGER NOT NULL,
                 filename TEXT,
                 timestamp INTEGER,
                 FOREIGN KEY(user_id) REFERENCES user(id)
+            )''')
+
+    c.execute('''CREATE TABLE processed(
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                user_id INTEGER NOT NULL,
+                upload_id INTEGER NOT NULL,
+                filename TEXT,
+                timestamp INTEGER,
+                FOREIGN KEY(user_id) REFERENCES user(id),
+                FOREIGN KEY(upload_id) REFERENCES upload(id)
             )''')
 
     #TODO:create the session table
